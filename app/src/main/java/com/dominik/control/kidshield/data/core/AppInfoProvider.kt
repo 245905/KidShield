@@ -5,10 +5,11 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.dominik.control.kidshield.data.model.AppInfoEntity
 
-class AppInfoProvider(private val context: Context) {
+class AppInfoProvider(context: Context) {
     private val packageManager: PackageManager = context.packageManager
+    private var allPackages: List<AppInfoEntity> = emptyList()
 
-    fun getInstalledApps(): List<AppInfoEntity> {
+    fun fetchInstalledApps(): List<AppInfoEntity> {
         val apps = packageManager.getInstalledApplications(0)
         val packages = apps.map { pkg ->
             val appInfo = packageManager.getPackageInfo(pkg.packageName, 0)
@@ -26,6 +27,23 @@ class AppInfoProvider(private val context: Context) {
             )
         }
 
+        allPackages = packages;
         return packages;
     }
+
+    fun getUserAppsNames(): Map<String, AppInfoEntity>{
+        val npkgs = allPackages.filter { app ->
+            !app.isSystemApp
+        }
+        return npkgs.associateBy { app ->
+            app.packageName
+        }
+    }
+
+    fun getAllAppsNames(): Map<String, AppInfoEntity> {
+        return allPackages.associateBy { app ->
+            app.packageName
+        }
+    }
+
 }
