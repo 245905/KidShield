@@ -1,8 +1,6 @@
 package com.dominik.control.kidshield.data.datasource
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.dominik.control.kidshield.data.dao.AppInfoDao
@@ -20,19 +18,5 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun appInfoDao(): AppInfoDao
     abstract fun usageStatsDao(): UsageStatsDao
     abstract fun hourlyStatsDao(): HourlyStatsDao
-
-    companion object {
-        @Volatile private var INSTANCE: AppDatabase? = null
-
-        fun getInstance(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "kidshield_database"
-                ).build().also { INSTANCE = it }
-            }
-        }
-    }
 
 }
