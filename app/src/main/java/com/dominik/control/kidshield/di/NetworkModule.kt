@@ -5,6 +5,7 @@ import com.dominik.control.kidshield.data.remote.api.AppInfoApi
 import com.dominik.control.kidshield.data.remote.api.AuthApi
 import com.dominik.control.kidshield.data.remote.api.PairingApi
 import com.dominik.control.kidshield.data.remote.api.TestApi
+import com.dominik.control.kidshield.data.remote.api.UsageStatsApi
 import com.dominik.control.kidshield.data.remote.retrofit.AuthInterceptor
 import com.dominik.control.kidshield.data.remote.retrofit.TokenAuthenticator
 import com.google.gson.Gson
@@ -90,6 +91,11 @@ object NetworkModule {
     @Singleton
     fun provideAppInfoApi(@MainRetrofit retrofit: Retrofit): AppInfoApi =
         retrofit.create(AppInfoApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUsageStatsApi(@MainRetrofit retrofit: Retrofit): UsageStatsApi =
+        retrofit.create(UsageStatsApi::class.java)
 
     @Provides
     @Singleton
