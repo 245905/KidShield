@@ -3,6 +3,7 @@ package com.dominik.control.kidshield.di
 import android.content.Context
 import com.dominik.control.kidshield.data.remote.api.AppInfoApi
 import com.dominik.control.kidshield.data.remote.api.AuthApi
+import com.dominik.control.kidshield.data.remote.api.PairingApi
 import com.dominik.control.kidshield.data.remote.api.TestApi
 import com.dominik.control.kidshield.data.remote.retrofit.AuthInterceptor
 import com.dominik.control.kidshield.data.remote.retrofit.TokenAuthenticator
@@ -79,6 +80,11 @@ object NetworkModule {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+
+    @Provides
+    @Singleton
+    fun providePairingApi(@MainRetrofit retrofit: Retrofit): PairingApi =
+        retrofit.create(PairingApi::class.java)
 
     @Provides
     @Singleton
