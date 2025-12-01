@@ -1,4 +1,4 @@
-package com.dominik.control.kidshield.data.model
+package com.dominik.control.kidshield.data.model.domain
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

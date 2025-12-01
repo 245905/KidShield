@@ -3,7 +3,7 @@ package com.dominik.control.kidshield.data.core
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.dominik.control.kidshield.data.model.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
 
 class AppInfoProvider(context: Context) {
     private val packageManager: PackageManager = context.packageManager

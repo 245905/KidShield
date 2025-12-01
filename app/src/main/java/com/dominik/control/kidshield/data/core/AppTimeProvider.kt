@@ -3,9 +3,9 @@ package com.dominik.control.kidshield.data.core
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import com.dominik.control.kidshield.data.model.AppInfoEntity
-import com.dominik.control.kidshield.data.model.HourlyStatsEntity
-import com.dominik.control.kidshield.data.model.UsageStatsEntity
+import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.HourlyStatsEntity
+import com.dominik.control.kidshield.data.model.domain.UsageStatsEntity
 import java.time.Instant
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit

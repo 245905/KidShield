@@ -1,10 +1,11 @@
-package com.dominik.control.kidshield.data.datasource
+package com.dominik.control.kidshield.di
 
 import android.content.Context
 import androidx.room.Room
-import com.dominik.control.kidshield.data.dao.AppInfoDao
-import com.dominik.control.kidshield.data.dao.HourlyStatsDao
-import com.dominik.control.kidshield.data.dao.UsageStatsDao
+import com.dominik.control.kidshield.data.local.dao.AppInfoDao
+import com.dominik.control.kidshield.data.local.dao.HourlyStatsDao
+import com.dominik.control.kidshield.data.local.dao.UsageStatsDao
+import com.dominik.control.kidshield.data.local.datasource.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
