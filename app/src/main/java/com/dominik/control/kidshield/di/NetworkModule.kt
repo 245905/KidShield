@@ -3,6 +3,7 @@ package com.dominik.control.kidshield.di
 import android.content.Context
 import com.dominik.control.kidshield.data.remote.api.AppInfoApi
 import com.dominik.control.kidshield.data.remote.api.AuthApi
+import com.dominik.control.kidshield.data.remote.api.HourlyStatsApi
 import com.dominik.control.kidshield.data.remote.api.PairingApi
 import com.dominik.control.kidshield.data.remote.api.TestApi
 import com.dominik.control.kidshield.data.remote.api.UsageStatsApi
@@ -96,6 +97,11 @@ object NetworkModule {
     @Singleton
     fun provideUsageStatsApi(@MainRetrofit retrofit: Retrofit): UsageStatsApi =
         retrofit.create(UsageStatsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHourlyStatsApi(@MainRetrofit retrofit: Retrofit): HourlyStatsApi =
+        retrofit.create(HourlyStatsApi::class.java)
 
     @Provides
     @Singleton

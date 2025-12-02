@@ -2,6 +2,8 @@ package com.dominik.control.kidshield.di
 
 import com.dominik.control.kidshield.data.repository.AppInfoRepository
 import com.dominik.control.kidshield.data.repository.AppInfoRepositoryImpl
+import com.dominik.control.kidshield.data.repository.HourlyStatsRepository
+import com.dominik.control.kidshield.data.repository.HourlyStatsRepositoryImpl
 import com.dominik.control.kidshield.data.repository.TestRepository
 import com.dominik.control.kidshield.data.repository.TestRepositoryImpl
 import com.dominik.control.kidshield.data.repository.UsageStatsRepository
@@ -22,5 +24,8 @@ abstract class RepositoryModule{
 
     @Binds
     abstract fun bindTestRepo(impl: TestRepositoryImpl): TestRepository
+
+    @Binds
+    abstract fun bindHourlyStatsRepo(impl: HourlyStatsRepositoryImpl): HourlyStatsRepository
 
 }

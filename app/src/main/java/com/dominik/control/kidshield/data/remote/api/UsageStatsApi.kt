@@ -6,6 +6,6 @@ import retrofit2.http.POST
 
 interface UsageStatsApi {
 
-    @POST("api/v1/usage")
+    @POST("api/v1/usageStats")
     suspend fun uploadData(@Body data: List<UsageStatsDto>): String
 }
