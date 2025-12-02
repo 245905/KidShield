@@ -1,11 +1,11 @@
-package com.dominik.control.kidshield.data.dao
+package com.dominik.control.kidshield.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.dominik.control.kidshield.data.model.HourlyStatsEntity
+import com.dominik.control.kidshield.data.model.domain.HourlyStatsEntity
 import java.util.Date
 
 @Dao
