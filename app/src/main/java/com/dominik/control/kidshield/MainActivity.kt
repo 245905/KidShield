@@ -22,7 +22,13 @@ import com.dominik.control.kidshield.data.core.AppInfoProvider
 import com.dominik.control.kidshield.data.core.AppTimeProvider
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
 import com.dominik.control.kidshield.data.repository.AppInfoRepository
+import com.dominik.control.kidshield.data.repository.AuthManager
 import com.dominik.control.kidshield.data.repository.TestRepository
+import com.dominik.control.kidshield.ui.composable.navigation.NavigationStack
+import com.dominik.control.kidshield.ui.composable.screen.DataScreen
+import com.dominik.control.kidshield.ui.composable.screen.LoginScreen
+import com.dominik.control.kidshield.ui.controller.DataViewModel
+import com.dominik.control.kidshield.ui.controller.LoginViewModel
 import com.dominik.control.kidshield.ui.theme.KidShieldTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
@@ -66,9 +72,15 @@ class UserViewModel @Inject constructor(
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val viewModel: LoginViewModel by viewModels() // hilt-provided
+    private val dataViewModel: DataViewModel by viewModels() // hilt-provided
+
+    @Inject lateinit var authManager: AuthManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+//        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+
 
         val mp = AppInfoProvider(this)
         mp.fetchInstalledApps()
@@ -209,14 +221,21 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+//            KidShieldTheme {
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        name = "Android",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                }
+//            }
+//            LoginScreen(viewModel = viewModel, onNavigateToHome = {})
+//            DataScreen(viewModel = dataViewModel, onNavigateToHome = {})
+
             KidShieldTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                NavigationStack(authManager)
             }
+
         }
     }
 }

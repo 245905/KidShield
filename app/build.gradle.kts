@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.material.icons.extended)
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.runtime.livedata)
 //    implementation(libs.androidx.room.compiler.processing.testing)
     ksp(libs.room.compiler)
     implementation(libs.hilt.android)
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.security.crypto)
 //    ksp(libs.security.crypto)
+    implementation(libs.hilt.navigation.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
