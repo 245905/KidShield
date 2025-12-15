@@ -35,6 +35,9 @@ class TokenAuthenticator @Inject constructor(
                         .header("Authorization", "Bearer ${refreshResponse.token}")
                         .build()
                 }
+                runBlocking {
+                    apiServiceForAuth.logout(RefreshRequest(refreshToken))
+                }
                 return null
             }
             return null

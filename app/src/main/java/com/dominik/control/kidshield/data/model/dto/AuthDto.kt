@@ -7,7 +7,8 @@ data class LoginRequest(
 
 data class RegisterRequest(
     val email: String,
-    val password: String
+    val password: String,
+    val userType: UserType
 )
 
 data class RefreshRequest(
@@ -19,3 +20,8 @@ data class AuthResponse(
     val refreshToken: String
 )
 
+enum class UserType{
+    ADMIN,
+    SUPERVISOR,
+    MONITORED
+}

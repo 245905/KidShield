@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 interface AppInfoRepository {
     suspend fun uploadData(data: List<AppInfoEntity>): Result<Unit>
     suspend fun getAllAppInfos(): List<AppInfoEntity>
+    suspend fun getUserAppInfos(): List<AppInfoEntity>
     suspend fun insertAppInfos(data: List<AppInfoEntity>): List<Long>
     suspend fun deleteAppInfos(data: List<AppInfoEntity>): Int
 }
@@ -31,6 +32,10 @@ class AppInfoRepositoryImpl @Inject constructor(
 
     override suspend fun getAllAppInfos(): List<AppInfoEntity> {
         return dao.getAllAppInfos()
+    }
+
+    override suspend fun getUserAppInfos(): List<AppInfoEntity> {
+        return dao.getUserAppInfos()
     }
 
     override suspend fun insertAppInfos(data: List<AppInfoEntity>): List<Long> {

@@ -34,6 +34,9 @@ interface AppInfoDao {
     @Query("SELECT * FROM app_infos WHERE isSystemApp = TRUE")
     suspend fun getSystemAppInfos(): List<AppInfoEntity>
 
+    @Query("SELECT * FROM app_infos WHERE isSystemApp = FALSE")
+    suspend fun getUserAppInfos(): List<AppInfoEntity>
+
     @Query("SELECT * FROM app_infos WHERE appName = :appName")
     suspend fun getAppInfoByAppName(appName: String): AppInfoEntity
 
