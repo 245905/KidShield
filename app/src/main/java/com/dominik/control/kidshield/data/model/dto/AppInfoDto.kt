@@ -3,6 +3,7 @@ package com.dominik.control.kidshield.data.model.dto
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
 
 data class AppInfoDto(
+    val referenceNumber: Long?,
     val appName: String,
     val packageName: String,
     val versionName: String?,
@@ -19,7 +20,8 @@ fun AppInfoDto.toEntity(): AppInfoEntity = AppInfoEntity(
     versionCode = versionCode,
     firstInstallTime = firstInstallTime,
     lastUpdateTime = lastUpdateTime,
-    isSystemApp = isSystemApp
+    isSystemApp = isSystemApp,
+    referenceNumber = referenceNumber
 )
 
 fun AppInfoEntity.toDto(): AppInfoDto = AppInfoDto(
@@ -29,5 +31,6 @@ fun AppInfoEntity.toDto(): AppInfoDto = AppInfoDto(
     versionCode = versionCode,
     firstInstallTime = firstInstallTime,
     lastUpdateTime = lastUpdateTime,
-    isSystemApp = isSystemApp
+    isSystemApp = isSystemApp,
+    referenceNumber = referenceNumber
 )

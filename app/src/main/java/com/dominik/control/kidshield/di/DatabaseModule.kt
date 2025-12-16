@@ -3,6 +3,7 @@ package com.dominik.control.kidshield.di
 import android.content.Context
 import androidx.room.Room
 import com.dominik.control.kidshield.data.local.dao.AppInfoDao
+import com.dominik.control.kidshield.data.local.dao.AppInfoDiffDao
 import com.dominik.control.kidshield.data.local.dao.HourlyStatsDao
 import com.dominik.control.kidshield.data.local.dao.UsageStatsDao
 import com.dominik.control.kidshield.data.local.datasource.AppDatabase
@@ -30,6 +31,11 @@ object DatabaseModule {
     @Provides
     fun provideAppInfoDao(db: AppDatabase): AppInfoDao {
         return db.appInfoDao()
+    }
+
+    @Provides
+    fun provideAppInfoDiffDao(db: AppDatabase): AppInfoDiffDao {
+        return db.appInfoDiffDao()
     }
 
     @Provides

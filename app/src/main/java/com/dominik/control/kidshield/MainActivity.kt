@@ -20,7 +20,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.dominik.control.kidshield.data.core.AppInfoProvider
 import com.dominik.control.kidshield.data.core.AppTimeProvider
+import com.dominik.control.kidshield.data.model.domain.AppInfoDiffEntity
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.repository.AppInfoDiffRepository
 import com.dominik.control.kidshield.data.repository.AppInfoRepository
 import com.dominik.control.kidshield.data.repository.AuthManager
 import com.dominik.control.kidshield.data.repository.TestRepository
@@ -42,7 +44,8 @@ class KidShield : Application()
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
-    private val testRepository: TestRepository
+    private val testRepository: TestRepository,
+    private val appInfoDiffRepository: AppInfoDiffRepository
 ) : ViewModel() {
 
     suspend fun getAllAppInfo(): List<AppInfoEntity> {
@@ -67,6 +70,14 @@ class UserViewModel @Inject constructor(
 
     suspend fun callRestricted(): Result<Unit> {
         return testRepository.restricted()
+    }
+
+    suspend fun pushData(data: List<AppInfoEntity>): Result<Unit> {
+        return appInfoRepository.uploadData(data)
+    }
+
+    suspend fun pullData(): Result<List<AppInfoDiffEntity>> {
+        return appInfoDiffRepository.downloadData()
     }
 }
 
@@ -110,8 +121,8 @@ class MainActivity : ComponentActivity() {
 
         val userViewModel: UserViewModel by viewModels()
         lifecycleScope.launch {
-            val res = userViewModel.insertAppInfos(pkgs)
-            Log.d("dev-db", "insert $res")
+//            val res = userViewModel.insertAppInfos(pkgs)
+//            Log.d("dev-db", "insert $res")
             val res1 = userViewModel.deleteAppInfos(pkgs)
             Log.d("dev-db", "delete $res1")
             val res2 = userViewModel.getAllAppInfo()

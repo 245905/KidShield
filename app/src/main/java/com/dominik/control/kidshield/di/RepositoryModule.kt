@@ -1,5 +1,7 @@
 package com.dominik.control.kidshield.di
 
+import com.dominik.control.kidshield.data.repository.AppInfoDiffRepository
+import com.dominik.control.kidshield.data.repository.AppInfoDiffRepositoryImpl
 import com.dominik.control.kidshield.data.repository.AppInfoRepository
 import com.dominik.control.kidshield.data.repository.AppInfoRepositoryImpl
 import com.dominik.control.kidshield.data.repository.AuthRepository
@@ -20,6 +22,9 @@ import dagger.hilt.components.SingletonComponent
 abstract class RepositoryModule{
     @Binds
     abstract fun bindAppInfoRepo(impl: AppInfoRepositoryImpl): AppInfoRepository
+
+    @Binds
+    abstract fun bindAppInfoDiffRepo(impl: AppInfoDiffRepositoryImpl): AppInfoDiffRepository
 
     @Binds
     abstract fun bindUsageStatsRepo(impl: UsageStatsRepositoryImpl): UsageStatsRepository

@@ -23,7 +23,8 @@ class AppInfoProvider(context: Context) {
                 versionCode = appInfo.longVersionCode,
                 firstInstallTime = appInfo.firstInstallTime,
                 lastUpdateTime = appInfo.lastUpdateTime,
-                isSystemApp = isSystemApp
+                isSystemApp = isSystemApp,
+                referenceNumber = null
             )
         }
 

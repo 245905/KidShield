@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "app_infos")
 data class AppInfoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val referenceNumber: Long?,
     val appName: String,
     val packageName: String,
     val versionName: String?,
