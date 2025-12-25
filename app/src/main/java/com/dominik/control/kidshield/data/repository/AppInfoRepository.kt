@@ -11,10 +11,12 @@ import kotlinx.coroutines.withContext
 
 interface AppInfoRepository {
     suspend fun uploadData(data: List<AppInfoEntity>): Result<Unit>
+    suspend fun downloadData(): Result<List<AppInfoEntity>>
     suspend fun getAllAppInfos(): List<AppInfoEntity>
     suspend fun getUserAppInfos(): List<AppInfoEntity>
     suspend fun insertAppInfos(data: List<AppInfoEntity>): List<Long>
     suspend fun deleteAppInfos(data: List<AppInfoEntity>): Int
+    suspend fun deleteAllAppInfos()
 }
 
 class AppInfoRepositoryImpl @Inject constructor(
@@ -27,6 +29,13 @@ class AppInfoRepositoryImpl @Inject constructor(
         withContext(ioDispatcher) {
             runCatching {
                 remote.uploadData(data)
+            }
+        }
+
+    override suspend fun downloadData(): Result<List<AppInfoEntity>> =
+        withContext(ioDispatcher) {
+            runCatching {
+                remote.downloadData()
             }
         }
 
@@ -44,5 +53,9 @@ class AppInfoRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAppInfos(data: List<AppInfoEntity>): Int {
         return dao.deleteAppInfos(data)
+    }
+
+    override suspend fun deleteAllAppInfos() {
+        return dao.deleteAll()
     }
 }

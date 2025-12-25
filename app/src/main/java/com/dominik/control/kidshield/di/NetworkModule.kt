@@ -3,6 +3,7 @@ package com.dominik.control.kidshield.di
 import android.content.Context
 import com.dominik.control.kidshield.data.local.datasource.TokenRepository
 import com.dominik.control.kidshield.data.remote.api.AppInfoApi
+import com.dominik.control.kidshield.data.remote.api.AppInfoDiffApi
 import com.dominik.control.kidshield.data.remote.api.AuthApi
 import com.dominik.control.kidshield.data.remote.api.HourlyStatsApi
 import com.dominik.control.kidshield.data.remote.api.PairingApi
@@ -96,7 +97,7 @@ object NetworkModule {
         @AuthOkHttpClient client: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.33.111:8082/")
+            .baseUrl("http://192.168.1.16:8082/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build() // UWAGA: bez interceptora z tokenem!
@@ -112,7 +113,7 @@ object NetworkModule {
     @MainRetrofit
     fun provideRetrofit(gson: Gson, @MainOkHttpClient client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://192.168.33.111:8082/")
+            .baseUrl("http://192.168.1.16:8082/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -126,6 +127,11 @@ object NetworkModule {
     @Singleton
     fun provideAppInfoApi(@MainRetrofit retrofit: Retrofit): AppInfoApi =
         retrofit.create(AppInfoApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAppInfoDiffApi(@MainRetrofit retrofit: Retrofit): AppInfoDiffApi =
+        retrofit.create(AppInfoDiffApi::class.java)
 
     @Provides
     @Singleton
