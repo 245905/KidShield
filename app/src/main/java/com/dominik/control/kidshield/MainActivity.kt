@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
@@ -22,13 +26,21 @@ import com.dominik.control.kidshield.data.core.AppInfoProvider
 import com.dominik.control.kidshield.data.core.AppTimeProvider
 import com.dominik.control.kidshield.data.model.domain.AppInfoDiffEntity
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.UsageStatsEntity
 import com.dominik.control.kidshield.data.repository.AppInfoDiffRepository
 import com.dominik.control.kidshield.data.repository.AppInfoRepository
 import com.dominik.control.kidshield.data.repository.AuthManager
 import com.dominik.control.kidshield.data.repository.TestRepository
 import com.dominik.control.kidshield.ui.composable.navigation.NavigationStack
 import com.dominik.control.kidshield.ui.composable.screen.DataScreen
+//import com.dominik.control.kidshield.ui.composable.screen.HourlyOverviewPreviewViewModel
+//import com.dominik.control.kidshield.ui.composable.screen.HourlyOverviewScreen
 import com.dominik.control.kidshield.ui.composable.screen.LoginScreen
+import com.dominik.control.kidshield.ui.composable.screen.PreviewUsageDayHost
+//import com.dominik.control.kidshield.ui.composable.screen.UsageDetailScreen
+//import com.dominik.control.kidshield.ui.composable.screen.UsageListScreen
+//import com.dominik.control.kidshield.ui.composable.screen.UsageOverviewScreen
+//import com.dominik.control.kidshield.ui.composable.screen.UsagePreviewViewModel
 import com.dominik.control.kidshield.ui.controller.DataViewModel
 import com.dominik.control.kidshield.ui.controller.LoginViewModel
 import com.dominik.control.kidshield.ui.theme.KidShieldTheme
@@ -37,6 +49,7 @@ import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
+import java.util.Date
 
 @HiltAndroidApp
 class KidShield : Application()
@@ -244,7 +257,10 @@ class MainActivity : ComponentActivity() {
 //            DataScreen(viewModel = dataViewModel, onNavigateToHome = {})
 
             KidShieldTheme {
-                NavigationStack(authManager)
+//                NavigationStack(authManager)
+//                PreviewUsageScreens()
+//                PreviewHourly()
+                PreviewUsageDayHost()
             }
 
         }
@@ -266,3 +282,28 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+//@Composable
+//fun PreviewUsageScreens() {
+//    val vm = remember { UsagePreviewViewModel() }
+//    var screen by remember { mutableStateOf("overview") }
+//    var selected: UsageStatsEntity? by remember { mutableStateOf(null) }
+//
+//    when (screen) {
+//        "overview" -> UsageOverviewScreen(vm, onAppSelected = {
+//            selected = it; screen = "detail"
+//        })
+//        "list" -> UsageListScreen(vm, onAppSelected = {
+//            selected = it; screen = "detail"
+//        }, onBack = { screen = "overview" })
+//        "detail" -> selected?.let {
+//            UsageDetailScreen(vm, stat = it, onBack = { screen = "overview" })
+//        }
+//    }
+//}
+//
+//@Composable
+//fun PreviewHourly() {
+//    val vm = remember { HourlyOverviewPreviewViewModel() }
+//    HourlyOverviewScreen(viewModel = vm, date = Date(), onBack = null)
+//}
