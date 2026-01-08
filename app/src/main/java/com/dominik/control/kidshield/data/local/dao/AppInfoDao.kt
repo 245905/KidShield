@@ -5,7 +5,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 
 @Dao
 interface AppInfoDao {
@@ -42,5 +44,11 @@ interface AppInfoDao {
 
     @Query("SELECT * FROM app_infos WHERE packageName = :packageName")
     suspend fun getAppInfoByPackageName(packageName: String): AppInfoEntity
+
+    @Query("SELECT * FROM app_infos WHERE status = :status")
+    suspend fun getAppInfoByStatus(status: UploadStatusType): List<AppInfoEntity>
+
+    @Update
+    suspend fun updateAppInfos(appInfos: List<AppInfoEntity>): Int
 
 }

@@ -1,9 +1,10 @@
-package com.dominik.control.kidshield.data.core
+package com.dominik.control.kidshield.data.core.providers
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 
 class AppInfoProvider(context: Context) {
     private val packageManager: PackageManager = context.packageManager
@@ -24,7 +25,8 @@ class AppInfoProvider(context: Context) {
                 firstInstallTime = appInfo.firstInstallTime,
                 lastUpdateTime = appInfo.lastUpdateTime,
                 isSystemApp = isSystemApp,
-                referenceNumber = null
+                referenceNumber = null,
+                status = UploadStatusType.PENDING
             )
         }
 
