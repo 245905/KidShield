@@ -10,5 +10,7 @@ data class HourlyStatsEntity(
     val date: Date,
     val hour: Int,
     val totalTime: Long,
-    val packageName: String?
+    val packageName: String?,
+
+    val status: UploadStatusType
 )
