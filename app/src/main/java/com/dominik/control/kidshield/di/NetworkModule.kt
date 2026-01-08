@@ -7,6 +7,7 @@ import com.dominik.control.kidshield.data.remote.api.AppInfoDiffApi
 import com.dominik.control.kidshield.data.remote.api.AuthApi
 import com.dominik.control.kidshield.data.remote.api.HourlyStatsApi
 import com.dominik.control.kidshield.data.remote.api.PairingApi
+import com.dominik.control.kidshield.data.remote.api.PointApi
 import com.dominik.control.kidshield.data.remote.api.TestApi
 import com.dominik.control.kidshield.data.remote.api.UsageStatsApi
 import com.dominik.control.kidshield.data.remote.retrofit.AuthInterceptor
@@ -97,7 +98,7 @@ object NetworkModule {
         @AuthOkHttpClient client: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.16:8082/")
+            .baseUrl("http://192.168.33.111:8082/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build() // UWAGA: bez interceptora z tokenem!
@@ -113,7 +114,7 @@ object NetworkModule {
     @MainRetrofit
     fun provideRetrofit(gson: Gson, @MainOkHttpClient client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.16:8082/")
+            .baseUrl("http://192.168.33.111:8082/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -142,6 +143,11 @@ object NetworkModule {
     @Singleton
     fun provideHourlyStatsApi(@MainRetrofit retrofit: Retrofit): HourlyStatsApi =
         retrofit.create(HourlyStatsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providePointApi(@MainRetrofit retrofit: Retrofit): PointApi =
+        retrofit.create(PointApi::class.java)
 
     @Provides
     @Singleton

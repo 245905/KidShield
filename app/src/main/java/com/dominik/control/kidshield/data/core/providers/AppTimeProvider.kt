@@ -1,12 +1,14 @@
-package com.dominik.control.kidshield.data.core
+package com.dominik.control.kidshield.data.core.providers
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
 import com.dominik.control.kidshield.data.model.domain.HourlyStatsEntity
+import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 import com.dominik.control.kidshield.data.model.domain.UsageStatsEntity
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.Date
@@ -16,29 +18,51 @@ class AppTimeProvider(context: Context) {
     private var allPackages: List<UsageStatsEntity> = emptyList()
     private var hourlyStats: List<HourlyStatsEntity> = emptyList()
 
-    fun fetchUsageStats(userApps: Map<String, AppInfoEntity>): List<UsageStatsEntity>{
-        val endTime = System.currentTimeMillis()
-        val startTime = endTime - 1000 * 60 * 60 * 24
+    fun fetchUsageStats(previousDay: Boolean = false): List<UsageStatsEntity>{
+        val zoneId = ZoneId.systemDefault()
+
+        val startTime: Long
+        val endTime: Long
+        if(!previousDay){
+            startTime = LocalDate.now(zoneId)
+                .atStartOfDay(zoneId)
+                .toInstant()
+                .toEpochMilli()
+
+            endTime = System.currentTimeMillis()
+        }
+        else{
+            val yesterday = LocalDate.now(zoneId).minusDays(1)
+            startTime = yesterday
+                .atStartOfDay(zoneId)
+                .toInstant()
+                .toEpochMilli()
+
+            endTime = yesterday
+                .atTime(LocalTime.MAX)
+                .atZone(zoneId)
+                .toInstant()
+                .toEpochMilli()
+        }
+
+//        val endTime = System.currentTimeMillis()
+//        val startTime = endTime - 1000 * 60 * 60 * 24
 
         val stats = usageStatsManager.queryUsageStats(
             UsageStatsManager.INTERVAL_DAILY,
             startTime,
             endTime
         )
-        val filteredStats = stats.filter { stat ->
-            stat.packageName in userApps.keys
-        }
 
-        val userStats = filteredStats.map { stat ->
+        val userStats = stats.map { stat ->
             
             UsageStatsEntity(
                 date = Date(stat.lastTimeStamp),
-                appName = userApps[stat.packageName]!!.appName,
                 packageName = stat.packageName,
-                isSystemApp = userApps[stat.packageName]!!.isSystemApp,
                 lastTimeUsed = stat.lastTimeUsed,
                 totalTimeInForeground = stat.totalTimeInForeground,
-                totalTimeVisible = stat.totalTimeVisible
+                totalTimeVisible = stat.totalTimeVisible,
+                status = UploadStatusType.PENDING
             )
         }
 
@@ -46,7 +70,7 @@ class AppTimeProvider(context: Context) {
         return userStats
     }
 
-    fun fetchUsageEvents(interestedPackages: Set<String>? = null, lookBack: Long = 1000*60*60L): List<HourlyStatsEntity> {
+    fun fetchUsageEvents(interestedPackages: Set<String>? = null, lookBack: Long = 1000*60*60L, previousDay: Boolean = false): List<HourlyStatsEntity> {
         val hourlyBuckets = MutableList(24){0L}
         val hourlyBucketsPerPackage = mutableMapOf<String, LongArray>()
 
@@ -70,8 +94,34 @@ class AppTimeProvider(context: Context) {
             }
         }
 
-        val endTime = System.currentTimeMillis()
-        val startTime = endTime - 1000 * 60 * 60 * 24
+        val zoneId = ZoneId.systemDefault()
+
+        val startTime: Long
+        val endTime: Long
+        if(!previousDay){
+            startTime = LocalDate.now(zoneId)
+                .atStartOfDay(zoneId)
+                .toInstant()
+                .toEpochMilli()
+
+            endTime = System.currentTimeMillis()
+        }
+        else{
+            val yesterday = LocalDate.now(zoneId).minusDays(1)
+            startTime = yesterday
+                .atStartOfDay(zoneId)
+                .toInstant()
+                .toEpochMilli()
+
+            endTime = yesterday
+                .atTime(LocalTime.MAX)
+                .atZone(zoneId)
+                .toInstant()
+                .toEpochMilli()
+        }
+
+//        val endTime = System.currentTimeMillis()
+//        val startTime = endTime - 1000 * 60 * 60 * 24
 
         var currentForegroundPkg: String? = null
         var currentForegroundStart: Long = -1L
@@ -179,7 +229,8 @@ class AppTimeProvider(context: Context) {
                 date = date,
                 hour = hourIndex,
                 totalTime = totalMs,
-                packageName = null
+                packageName = null,
+                status = UploadStatusType.PENDING
             )
         }
         val hourlyStatsPerPackage = hourlyBucketsPerPackage.flatMap { (packageName, buckets) ->
@@ -188,7 +239,8 @@ class AppTimeProvider(context: Context) {
                     date = date,
                     hour = hourIndex,
                     totalTime = totalMs,
-                    packageName = packageName
+                    packageName = packageName,
+                    status = UploadStatusType.PENDING
                 )
             }
         }

@@ -25,3 +25,7 @@ enum class UserType{
     SUPERVISOR,
     MONITORED
 }
+
+data class MessageResponse(
+    val message: String,
+)

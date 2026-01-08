@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.dominik.control.kidshield.data.local.dao.AppInfoDao
 import com.dominik.control.kidshield.data.local.dao.AppInfoDiffDao
 import com.dominik.control.kidshield.data.local.dao.HourlyStatsDao
+import com.dominik.control.kidshield.data.local.dao.PointDao
+import com.dominik.control.kidshield.data.local.dao.UploadedStatsDao
 import com.dominik.control.kidshield.data.local.dao.UsageStatsDao
 import com.dominik.control.kidshield.data.local.datasource.AppDatabase
 import dagger.Module
@@ -25,7 +27,8 @@ object DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "kidshield_database"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
@@ -46,5 +49,15 @@ object DatabaseModule {
     @Provides
     fun provideHourlyStatsDao(db: AppDatabase): HourlyStatsDao {
         return db.hourlyStatsDao()
+    }
+
+    @Provides
+    fun provideUploadedStatsDao(db: AppDatabase): UploadedStatsDao {
+        return db.uploadedStatsDao()
+    }
+
+    @Provides
+    fun providePointDao(db: AppDatabase): PointDao {
+        return db.pointDao()
     }
 }
