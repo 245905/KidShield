@@ -4,13 +4,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "hourly_stats")
-data class HourlyStatsEntity(
+@Entity(tableName = "uploaded_stats")
+data class UploadedStatsEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val date: Date,
-    val hour: Int,
-    val totalTime: Long,
-    val packageName: String?,
-
-    val status: UploadStatusType
+    val tableType: UploadTableType,
 )
+
+enum class UploadTableType {
+    HOURLY,
+    USAGE
+}

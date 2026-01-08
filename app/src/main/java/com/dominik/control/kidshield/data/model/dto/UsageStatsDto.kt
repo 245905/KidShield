@@ -1,13 +1,12 @@
 package com.dominik.control.kidshield.data.model.dto
 
+import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 import com.dominik.control.kidshield.data.model.domain.UsageStatsEntity
 import java.util.Date
 
 data class UsageStatsDto(
-    val date: Date,
-    val appName: String,
+    val date: Long,
     val packageName: String,
-    val isSystemApp: Boolean,
 
     val lastTimeUsed: Long,
 
@@ -16,20 +15,17 @@ data class UsageStatsDto(
 )
 
 fun UsageStatsDto.toEntity(): UsageStatsEntity = UsageStatsEntity(
-    date = date,
-    appName = appName,
+    date = Date(date),
     packageName = packageName,
-    isSystemApp = isSystemApp,
     lastTimeUsed = lastTimeUsed,
     totalTimeInForeground = totalTimeInForeground,
-    totalTimeVisible = totalTimeVisible
+    totalTimeVisible = totalTimeVisible,
+    status = UploadStatusType.UPLOADED
 )
 
 fun UsageStatsEntity.toDto(): UsageStatsDto = UsageStatsDto(
-    date = date,
-    appName = appName,
+    date = date.time,
     packageName = packageName,
-    isSystemApp = isSystemApp,
     lastTimeUsed = lastTimeUsed,
     totalTimeInForeground = totalTimeInForeground,
     totalTimeVisible = totalTimeVisible

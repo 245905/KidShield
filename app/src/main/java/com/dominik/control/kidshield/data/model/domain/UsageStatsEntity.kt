@@ -8,12 +8,12 @@ import java.util.Date
 data class UsageStatsEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val date: Date,
-    val appName: String,
     val packageName: String,
-    val isSystemApp: Boolean,
 
     val lastTimeUsed: Long,
 
     val totalTimeInForeground: Long, // main data
-    val totalTimeVisible: Long
+    val totalTimeVisible: Long,
+
+    val status: UploadStatusType
 )

@@ -8,8 +8,12 @@ import com.dominik.control.kidshield.data.repository.AuthRepository
 import com.dominik.control.kidshield.data.repository.AuthRepositoryImpl
 import com.dominik.control.kidshield.data.repository.HourlyStatsRepository
 import com.dominik.control.kidshield.data.repository.HourlyStatsRepositoryImpl
+import com.dominik.control.kidshield.data.repository.RouteRepository
+import com.dominik.control.kidshield.data.repository.RouteRepositoryImpl
 import com.dominik.control.kidshield.data.repository.TestRepository
 import com.dominik.control.kidshield.data.repository.TestRepositoryImpl
+import com.dominik.control.kidshield.data.repository.UploadedStatsRepository
+import com.dominik.control.kidshield.data.repository.UploadedStatsRepositoryImpl
 import com.dominik.control.kidshield.data.repository.UsageStatsRepository
 import com.dominik.control.kidshield.data.repository.UsageStatsRepositoryImpl
 import dagger.Binds
@@ -38,4 +42,9 @@ abstract class RepositoryModule{
     @Binds
     abstract fun bindAuthRepo(impl: AuthRepositoryImpl): AuthRepository
 
+    @Binds
+    abstract fun bindRouteRepo(impl: RouteRepositoryImpl): RouteRepository
+
+    @Binds
+    abstract fun bindUploadedStatsRepo(impl: UploadedStatsRepositoryImpl): UploadedStatsRepository
 }

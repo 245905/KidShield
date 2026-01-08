@@ -1,6 +1,7 @@
 package com.dominik.control.kidshield.data.model.dto
 
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 
 data class AppInfoDto(
     val referenceNumber: Long?,
@@ -21,7 +22,8 @@ fun AppInfoDto.toEntity(): AppInfoEntity = AppInfoEntity(
     firstInstallTime = firstInstallTime,
     lastUpdateTime = lastUpdateTime,
     isSystemApp = isSystemApp,
-    referenceNumber = referenceNumber
+    referenceNumber = referenceNumber,
+    status = UploadStatusType.UPLOADED
 )
 
 fun AppInfoEntity.toDto(): AppInfoDto = AppInfoDto(

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.dominik.control.kidshield.data.model.domain.AppChangeType
 import com.dominik.control.kidshield.data.model.domain.AppInfoDiffEntity
 import com.dominik.control.kidshield.data.model.domain.AppInfoEntity
+import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 import com.dominik.control.kidshield.data.repository.AppInfoDiffRepository
 import com.dominik.control.kidshield.data.repository.AppInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,7 +68,8 @@ val fakeApps = listOf(
         versionCode = 1543210,
         firstInstallTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 300,
         lastUpdateTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 2,
-        isSystemApp = false
+        isSystemApp = false,
+        status = UploadStatusType.UPLOADED
     ),
     AppInfoEntity(
         id = 2,
@@ -78,7 +80,8 @@ val fakeApps = listOf(
         versionCode = 1185993090,
         firstInstallTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 500,
         lastUpdateTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 1,
-        isSystemApp = true
+        isSystemApp = true,
+        status = UploadStatusType.UPLOADED
     ),
     AppInfoEntity(
         id = 3,
@@ -89,7 +92,8 @@ val fakeApps = listOf(
         versionCode = 80882112,
         firstInstallTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 200,
         lastUpdateTime = System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 30,
-        isSystemApp = false
+        isSystemApp = false,
+        status = UploadStatusType.UPLOADED
     )
 )
 val fakeDiffs = listOf(

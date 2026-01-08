@@ -17,12 +17,16 @@ import com.dominik.control.kidshield.data.repository.AuthManager
 import com.dominik.control.kidshield.data.repository.AuthState
 import com.dominik.control.kidshield.ui.composable.screen.DataScreen
 import com.dominik.control.kidshield.ui.composable.screen.LoginScreen
+import com.dominik.control.kidshield.ui.composable.screen.PermissionScreen
 import com.dominik.control.kidshield.ui.controller.DataViewModel
 import com.dominik.control.kidshield.ui.controller.LoginViewModel
+import com.dominik.control.kidshield.ui.controller.PermissionManager
+import com.dominik.control.kidshield.ui.controller.PermissionViewModel
 
 @Composable
 fun NavigationStack(
-    authManager: AuthManager
+    authManager: AuthManager,
+    permissionManager: PermissionManager
 )
 {
     val navController = rememberNavController()
@@ -43,7 +47,7 @@ fun NavigationStack(
                         // stay
                     }
                     is AuthState.Authenticated -> {
-                        navController.navigate(Screen.AppInfo.route) {
+                        navController.navigate(Screen.Permissions.route) {
                             popUpTo("splash") { inclusive = true }
                         }
                     }
@@ -63,7 +67,7 @@ fun NavigationStack(
             LoginScreen(
                 viewModel = viewModel,
                 onNavigateToHome = {
-                navController.navigate(Screen.AppInfo.route) {
+                navController.navigate(Screen.Permissions.route) {
                     popUpTo(Screen.Login.route) { inclusive = true }
                     launchSingleTop = true
                 }
@@ -80,6 +84,18 @@ fun NavigationStack(
             )
         }
 
+        composable(
+            route = Screen.Permissions.route
+        ) {backStackEntry ->
+            val viewModel = hiltViewModel<PermissionViewModel, PermissionViewModel.Factory>(
+                creationCallback = { factory -> factory.create(permissionManager = permissionManager) }
+            )
+            PermissionScreen(
+                viewModel = viewModel,
+                onNavigateToHome = { navController.navigate(Screen.Login.route) }
+            )
+        }
+
     }
 }
 
@@ -88,6 +104,7 @@ sealed class Screen(val route: String) {
     data object Login : Screen("login")
     data object Home : Screen("home")
     data object AppInfo : Screen("appinfo")
+    data object Permissions : Screen("permissions")
 }
 
 @Composable

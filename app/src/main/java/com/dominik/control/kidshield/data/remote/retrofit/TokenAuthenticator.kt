@@ -16,6 +16,7 @@ class TokenAuthenticator @Inject constructor(
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
+        println("refreshing")
         // synchronized refresh - prosty przykład
         synchronized(this) {
             val current = tokenRepository.getAccessToken()

@@ -13,5 +13,7 @@ data class AppInfoEntity(
     val versionCode: Long,
     val firstInstallTime: Long,
     val lastUpdateTime: Long,
-    val isSystemApp: Boolean
+    val isSystemApp: Boolean,
+
+    val status: UploadStatusType
 )
