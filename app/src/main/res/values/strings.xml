@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">KidShield</string>
+    <string name="LocationForegroundServiceDescription">
+        This service is actively tracking your position and storing it locally.
+    </string>
 </resources>
