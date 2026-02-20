@@ -36,7 +36,7 @@ class KidShield : Application(), Configuration.Provider {
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var authManager: AuthManager
-    lateinit var permissionManager: PermissionManager
+    private lateinit var permissionManager: PermissionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
