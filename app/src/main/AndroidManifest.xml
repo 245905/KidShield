@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
@@ -46,6 +47,13 @@
             android:name=".data.core.workers.LocationForegroundService"
             android:exported="false"
             android:foregroundServiceType="location"
+            android:description="@string/LocationForegroundServiceDescription"
+            />
+
+        <service
+            android:name=".data.core.workers.SensorService"
+            android:exported="false"
+            android:foregroundServiceType="health"
             android:description="@string/LocationForegroundServiceDescription"
             />
 
