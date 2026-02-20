@@ -6,20 +6,17 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.PendingIntent.*
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.dominik.control.kidshield.data.model.domain.PointEntity
 import com.dominik.control.kidshield.data.model.domain.UploadStatusType
 import com.dominik.control.kidshield.data.repository.RouteRepository
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityRecognitionClient
-import com.google.android.gms.location.ActivityRecognitionResult
 import com.google.android.gms.location.DetectedActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -184,9 +181,15 @@ class LocationForegroundService : Service() {
     private suspend fun handleLocation(loc: Location, now: Long) {
         if (!isLocationValid(loc)) return
 
-        val p = PointEntity(lat = loc.latitude, lon = loc.longitude, speed = loc.speed, fixTime = loc.time, receivedTime = now, status = UploadStatusType.PENDING)
+        val p = PointEntity(
+            lat = loc.latitude,
+            lon = loc.longitude,
+            speed = loc.speed,
+            fixTime = loc.time,
+            receivedTime = now,
+            status = UploadStatusType.PENDING
+        )
         repository.insertPoint(p)
-
     }
 
     private fun isLocationValid(loc: Location): Boolean {

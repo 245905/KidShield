@@ -10,6 +10,12 @@ import com.dominik.control.kidshield.data.repository.HourlyStatsRepository
 import com.dominik.control.kidshield.data.repository.HourlyStatsRepositoryImpl
 import com.dominik.control.kidshield.data.repository.RouteRepository
 import com.dominik.control.kidshield.data.repository.RouteRepositoryImpl
+import com.dominik.control.kidshield.data.repository.SensorInfoRepository
+import com.dominik.control.kidshield.data.repository.SensorInfoRepositoryImpl
+import com.dominik.control.kidshield.data.repository.SigMotionRepository
+import com.dominik.control.kidshield.data.repository.SigMotionRepositoryImpl
+import com.dominik.control.kidshield.data.repository.StepCountRepository
+import com.dominik.control.kidshield.data.repository.StepCountRepositoryImpl
 import com.dominik.control.kidshield.data.repository.TestRepository
 import com.dominik.control.kidshield.data.repository.TestRepositoryImpl
 import com.dominik.control.kidshield.data.repository.UploadedStatsRepository
@@ -47,4 +53,13 @@ abstract class RepositoryModule{
 
     @Binds
     abstract fun bindUploadedStatsRepo(impl: UploadedStatsRepositoryImpl): UploadedStatsRepository
+
+    @Binds
+    abstract fun bindStepCountRepo(impl: StepCountRepositoryImpl): StepCountRepository
+
+    @Binds
+    abstract fun bindSigMotionRepo(impl: SigMotionRepositoryImpl): SigMotionRepository
+
+    @Binds
+    abstract fun bindSensorInfoRepo(impl: SensorInfoRepositoryImpl): SensorInfoRepository
 }

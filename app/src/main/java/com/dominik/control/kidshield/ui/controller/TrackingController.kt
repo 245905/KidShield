@@ -1,6 +1,5 @@
 package com.dominik.control.kidshield.ui.controller
 
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
@@ -18,6 +17,9 @@ import com.dominik.control.kidshield.data.core.workers.GatherAppInfoWorker
 import com.dominik.control.kidshield.data.core.workers.GatherHourlyStatsWorker
 import com.dominik.control.kidshield.data.core.workers.GatherUsageStatsWorker
 import com.dominik.control.kidshield.data.core.workers.LocationForegroundService
+import com.dominik.control.kidshield.data.core.workers.SensorService
+import com.dominik.control.kidshield.data.core.workers.UploadSigMotionWorker
+import com.dominik.control.kidshield.data.core.workers.UploadStepCountWorker
 import com.dominik.control.kidshield.data.core.workers.UploadAppInfoWorker
 import com.dominik.control.kidshield.data.core.workers.UploadHourlyStatsWorker
 import com.dominik.control.kidshield.data.core.workers.UploadRouteWorker
@@ -36,6 +38,8 @@ object TrackingController {
     private const val W_GATHER_HOURLY = "gather_hourly_periodic"
     private const val W_UPLOAD_HOURLY = "upload_hourly_periodic"
     private const val W_UPLOAD_ROUTES = "upload_routes_periodic"
+    private const val W_UPLOAD_STEPS = "upload_steps_periodic"
+    private const val W_UPLOAD_MOTION = "upload_motion_periodic"
     private const val W_WATCHDOG = "tracking_watchdog"
 
     fun startFullControlIfAllowed(
@@ -51,6 +55,10 @@ object TrackingController {
             val startIntent = Intent(context, LocationForegroundService::class.java)
                 .setAction(LocationForegroundService.ACTION_START)
             ContextCompat.startForegroundService(context, startIntent)
+
+            val startIntent2 = Intent(context, SensorService::class.java)
+                .setAction(SensorService.ACTION_START)
+            ContextCompat.startForegroundService(context, startIntent2)
         }
 
         scheduleAllWorkers(context)
@@ -65,6 +73,11 @@ object TrackingController {
         }
         ContextCompat.startForegroundService(context, stop)
 
+        val stop2 = Intent(context, SensorService::class.java).apply {
+            action = SensorService.ACTION_STOP
+        }
+        ContextCompat.startForegroundService(context, stop2)
+
         // Cancel scheduled periodic workers
         val wm = WorkManager.getInstance(context)
         wm.cancelUniqueWork(W_GATHER_APPS)
@@ -74,6 +87,8 @@ object TrackingController {
         wm.cancelUniqueWork(W_GATHER_HOURLY)
         wm.cancelUniqueWork(W_UPLOAD_HOURLY)
         wm.cancelUniqueWork(W_UPLOAD_ROUTES)
+        wm.cancelUniqueWork(W_UPLOAD_STEPS)
+        wm.cancelUniqueWork(W_UPLOAD_MOTION)
         wm.cancelUniqueWork(W_WATCHDOG)
     }
 
@@ -123,6 +138,20 @@ object TrackingController {
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.SECONDS)
             .build()
         wm.enqueueUniquePeriodicWork(W_UPLOAD_ROUTES, ExistingPeriodicWorkPolicy.KEEP, uploadRoutes)
+
+        // steps
+        val uploadSteps = PeriodicWorkRequestBuilder<UploadStepCountWorker>(1, TimeUnit.HOURS)
+            .setConstraints(networkConstraint)
+            .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.SECONDS)
+            .build()
+        wm.enqueueUniquePeriodicWork(W_UPLOAD_STEPS, ExistingPeriodicWorkPolicy.KEEP, uploadSteps)
+
+        // motion
+        val uploadMotion = PeriodicWorkRequestBuilder<UploadSigMotionWorker>(1, TimeUnit.HOURS)
+            .setConstraints(networkConstraint)
+            .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.SECONDS)
+            .build()
+        wm.enqueueUniquePeriodicWork(W_UPLOAD_MOTION, ExistingPeriodicWorkPolicy.KEEP, uploadMotion)
 
         // 4) Optional: watchdog (every 15 minutes) — used to detect and attempt to re-start tracking if needed.
         // NOTE: restarting a location FGS from background may be blocked on Android 15+, so watchdog should prefer

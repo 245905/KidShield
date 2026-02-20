@@ -6,6 +6,8 @@ import com.dominik.control.kidshield.data.local.dao.AppInfoDao
 import com.dominik.control.kidshield.data.local.dao.AppInfoDiffDao
 import com.dominik.control.kidshield.data.local.dao.HourlyStatsDao
 import com.dominik.control.kidshield.data.local.dao.PointDao
+import com.dominik.control.kidshield.data.local.dao.SigMotionDao
+import com.dominik.control.kidshield.data.local.dao.StepCounterDao
 import com.dominik.control.kidshield.data.local.dao.UploadedStatsDao
 import com.dominik.control.kidshield.data.local.dao.UsageStatsDao
 import com.dominik.control.kidshield.data.local.datasource.AppDatabase
@@ -59,5 +61,15 @@ object DatabaseModule {
     @Provides
     fun providePointDao(db: AppDatabase): PointDao {
         return db.pointDao()
+    }
+
+    @Provides
+    fun provideStepCountDao(db: AppDatabase): StepCounterDao {
+        return db.stepCount()
+    }
+
+    @Provides
+    fun provideSigMotionDao(db: AppDatabase): SigMotionDao {
+        return db.sigMotion()
     }
 }
