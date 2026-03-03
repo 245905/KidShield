@@ -115,17 +115,17 @@ class SensorService : Service() {
         val toggleIntent = getService(
             this,
             1,
-            Intent(this, SensorService::class.java).apply { action = ACTION_SWITCH_PROFILE },
+            Intent(this, SensorService::class.java).apply { action = ACTION_PAUSE },
             FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
         )
 
         return NotificationCompat.Builder(this, NOTIF_CHANNEL_ID)
             .setContentTitle("Sensor monitoring")
-            .setContentText("Follow in background active")
-            .setSmallIcon(android.R.drawable.ic_menu_mylocation)
+            .setContentText("Collect in background active")
+            .setSmallIcon(android.R.drawable.ic_menu_compass)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .addAction(android.R.drawable.ic_media_pause, "Switch profile", toggleIntent)
+            .addAction(android.R.drawable.ic_media_pause, "Pause updates", toggleIntent)
             .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", stopIntent)
             .build()
     }
@@ -135,7 +135,6 @@ class SensorService : Service() {
         const val ACTION_STOP = "com.dominik.control.kidshield.sensor.action.STOP"
         const val ACTION_PAUSE = "com.dominik.control.kidshield.sensor.action.PAUSE"
         const val ACTION_RESUME = "com.dominik.control.kidshield.sensor.action.RESUME"
-        const val ACTION_SWITCH_PROFILE = "com.dominik.control.kidshield.sensor.action.SWITCH_PROFILE"
 
         const val NOTIF_CHANNEL_ID = "sensor_channel"
         const val NOTIF_ID = 33456
