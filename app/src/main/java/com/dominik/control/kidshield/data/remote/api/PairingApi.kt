@@ -1,5 +1,7 @@
 package com.dominik.control.kidshield.data.remote.api
 
+import com.dominik.control.kidshield.data.model.dto.CheckPairStatusRequest
+import com.dominik.control.kidshield.data.model.dto.CheckPairStatusResponse
 import com.dominik.control.kidshield.data.model.dto.GenerateCodeResponse
 import com.dominik.control.kidshield.data.model.dto.PairByPinRequest
 import com.dominik.control.kidshield.data.model.dto.PairByUUIDRequest
@@ -16,4 +18,7 @@ interface PairingApi {
 
     @POST("api/v1/pair/pin")
     suspend fun pairByPin(@Body request: PairByPinRequest)
+
+    @POST("api/v1/pair/check")
+    suspend fun checkPairStatus(@Body request: CheckPairStatusRequest): CheckPairStatusResponse
 }

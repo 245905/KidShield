@@ -14,3 +14,11 @@ data class PairByUUIDRequest(
 data class PairByPinRequest(
     val pin: String
 )
+
+data class CheckPairStatusResponse(
+    val isPaired: Boolean
+)
+
+data class CheckPairStatusRequest(
+    val pin: String
+)
