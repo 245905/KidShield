@@ -17,9 +17,11 @@ import com.dominik.control.kidshield.data.repository.AuthManager
 import com.dominik.control.kidshield.data.repository.AuthState
 import com.dominik.control.kidshield.ui.composable.screen.DataScreen
 import com.dominik.control.kidshield.ui.composable.screen.LoginScreen
+import com.dominik.control.kidshield.ui.composable.screen.PairingScreen
 import com.dominik.control.kidshield.ui.composable.screen.PermissionScreen
 import com.dominik.control.kidshield.ui.controller.DataViewModel
 import com.dominik.control.kidshield.ui.controller.LoginViewModel
+import com.dominik.control.kidshield.ui.controller.PairingViewModel
 import com.dominik.control.kidshield.ui.controller.PermissionManager
 import com.dominik.control.kidshield.ui.controller.PermissionViewModel
 
@@ -37,6 +39,7 @@ fun NavigationStack(
     }
 
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
+//    NavHost(navController = navController, startDestination = Screen.Pairing.route) {
 
         composable(route = Screen.Splash.route) {
             val state by authManager.state.collectAsState()
@@ -47,7 +50,7 @@ fun NavigationStack(
                         // stay
                     }
                     is AuthState.Authenticated -> {
-                        navController.navigate(Screen.Permissions.route) {
+                        navController.navigate(Screen.Pairing.route) {
                             popUpTo("splash") { inclusive = true }
                         }
                     }
@@ -67,7 +70,7 @@ fun NavigationStack(
             LoginScreen(
                 viewModel = viewModel,
                 onNavigateToHome = {
-                navController.navigate(Screen.Permissions.route) {
+                navController.navigate(Screen.Pairing.route) {
                     popUpTo(Screen.Login.route) { inclusive = true }
                     launchSingleTop = true
                 }
@@ -96,6 +99,16 @@ fun NavigationStack(
             )
         }
 
+        composable(
+            route = Screen.Pairing.route
+        ) {backStackEntry ->
+            val viewModel: PairingViewModel = hiltViewModel(backStackEntry)
+            PairingScreen(
+                viewModel = viewModel,
+                onNavigateToHome = { navController.navigate(Screen.Login.route) }
+            )
+        }
+
     }
 }
 
@@ -105,6 +118,7 @@ sealed class Screen(val route: String) {
     data object Home : Screen("home")
     data object AppInfo : Screen("appinfo")
     data object Permissions : Screen("permissions")
+    data object Pairing : Screen("pairing")
 }
 
 @Composable

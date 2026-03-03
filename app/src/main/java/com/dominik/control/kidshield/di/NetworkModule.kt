@@ -100,7 +100,7 @@ object NetworkModule {
         @AuthOkHttpClient client: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.16:8082/")
+            .baseUrl("http://192.168.33.111:8082/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build() // UWAGA: bez interceptora z tokenem!
@@ -116,7 +116,7 @@ object NetworkModule {
     @MainRetrofit
     fun provideRetrofit(gson: Gson, @MainOkHttpClient client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.16:8082/")
+            .baseUrl("http://192.168.33.111:8082/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
