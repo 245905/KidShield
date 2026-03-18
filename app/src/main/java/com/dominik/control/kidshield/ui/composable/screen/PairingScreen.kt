@@ -38,7 +38,8 @@ import com.dominik.control.kidshield.ui.controller.PairingViewModel
 @Composable
 fun PairingScreen(
     viewModel: PairingViewModel,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onSettingsClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -62,7 +63,7 @@ fun PairingScreen(
             TopAppBar(
                 title = { Text("Kid Shield", color = MaterialTheme.colorScheme.onBackground) },
                 actions = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = onSettingsClick ) {
                         Icon(Icons.Default.Settings, contentDescription = "Ustawienia", tint = MaterialTheme.colorScheme.onBackground)
                     }
                 }

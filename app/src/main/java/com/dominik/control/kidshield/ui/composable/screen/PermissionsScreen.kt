@@ -41,7 +41,7 @@ import com.dominik.control.kidshield.ui.controller.PermissionViewModel
 @Composable
 fun PermissionScreen(
     viewModel: PermissionViewModel,
-    onNavigateToHome: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     val state by viewModel.permissionManager.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -58,7 +58,7 @@ fun PermissionScreen(
             TopAppBar(
                 title = { Text("Kid Shield", color = MaterialTheme.colorScheme.onBackground) },
                 actions = {
-                    IconButton(onClick = { /* open settings screen */ }) {
+                    IconButton(onClick = onSettingsClick ) {
                         Icon(
                             Icons.Default.Settings,
                             contentDescription = "Ustawienia",

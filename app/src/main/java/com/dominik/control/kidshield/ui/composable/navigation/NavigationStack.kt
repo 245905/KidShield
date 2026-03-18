@@ -19,11 +19,13 @@ import com.dominik.control.kidshield.ui.composable.screen.DataScreen
 import com.dominik.control.kidshield.ui.composable.screen.LoginScreen
 import com.dominik.control.kidshield.ui.composable.screen.PairingScreen
 import com.dominik.control.kidshield.ui.composable.screen.PermissionScreen
+import com.dominik.control.kidshield.ui.composable.screen.SettingsScreen
 import com.dominik.control.kidshield.ui.controller.DataViewModel
 import com.dominik.control.kidshield.ui.controller.LoginViewModel
 import com.dominik.control.kidshield.ui.controller.PairingViewModel
 import com.dominik.control.kidshield.ui.controller.PermissionManager
 import com.dominik.control.kidshield.ui.controller.PermissionViewModel
+import com.dominik.control.kidshield.ui.controller.SettingsViewModel
 
 @Composable
 fun NavigationStack(
@@ -32,6 +34,15 @@ fun NavigationStack(
 )
 {
     val navController = rememberNavController()
+    val authState by authManager.state.collectAsState()
+
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Unauthenticated) {
+            navController.navigate(Screen.Login.route) {
+                popUpTo(0)
+            }
+        }
+    }
 
     // start auth check once
     LaunchedEffect(Unit) {
@@ -42,21 +53,21 @@ fun NavigationStack(
 //    NavHost(navController = navController, startDestination = Screen.Pairing.route) {
 
         composable(route = Screen.Splash.route) {
-            val state by authManager.state.collectAsState()
-            LaunchedEffect(state) {
 
-                when (state) {
+            LaunchedEffect(authState) {
+
+                when (authState) {
                     is AuthState.Loading -> {
                         // stay
                     }
                     is AuthState.Authenticated -> {
-                        navController.navigate(Screen.Pairing.route) {
-                            popUpTo("splash") { inclusive = true }
+                        navController.navigate(Screen.Permissions.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
                     is AuthState.Unauthenticated -> {
                         navController.navigate(Screen.Login.route) {
-                            popUpTo("splash") { inclusive = true }
+                            popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
                 }
@@ -64,7 +75,9 @@ fun NavigationStack(
             SplashScreen()
         }
 
-        composable(route = Screen.Login.route) { backStackEntry ->
+        composable(
+            route = Screen.Login.route
+        ) { backStackEntry ->
             val viewModel: LoginViewModel = hiltViewModel(backStackEntry)
 
             LoginScreen(
@@ -78,12 +91,22 @@ fun NavigationStack(
         }
 
         composable(
-            route = Screen.AppInfo.route
+            route = Screen.Pairing.route
         ) {backStackEntry ->
-            val viewModel: DataViewModel = hiltViewModel(backStackEntry)
-            DataScreen(
+            val viewModel: PairingViewModel = hiltViewModel(backStackEntry)
+
+            PairingScreen(
                 viewModel = viewModel,
-                onNavigateToHome = { navController.navigate(Screen.Login.route) }
+                onNavigateToHome = {
+                    navController.navigate(Screen.Permissions.route){
+                        popUpTo(Screen.Permissions.route) { inclusive = true }
+                    }
+                },
+                onSettingsClick = {
+                    navController.navigate(Screen.Settings.route) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
@@ -93,17 +116,37 @@ fun NavigationStack(
             val viewModel = hiltViewModel<PermissionViewModel, PermissionViewModel.Factory>(
                 creationCallback = { factory -> factory.create(permissionManager = permissionManager) }
             )
+
             PermissionScreen(
                 viewModel = viewModel,
-                onNavigateToHome = { navController.navigate(Screen.Login.route) }
+                onSettingsClick = {
+                    navController.navigate(Screen.Settings.route) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable(Screen.Settings.route) { backStackEntry ->
+            val viewModel: SettingsViewModel = hiltViewModel(backStackEntry)
+
+            SettingsScreen(
+                viewModel = viewModel,
+                onNavigateToPairing = {
+                    navController.navigate(Screen.Pairing.route) {
+                        popUpTo(Screen.Settings.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onBack = { navController.popBackStack() }
             )
         }
 
         composable(
-            route = Screen.Pairing.route
+            route = Screen.AppInfo.route
         ) {backStackEntry ->
-            val viewModel: PairingViewModel = hiltViewModel(backStackEntry)
-            PairingScreen(
+            val viewModel: DataViewModel = hiltViewModel(backStackEntry)
+            DataScreen(
                 viewModel = viewModel,
                 onNavigateToHome = { navController.navigate(Screen.Login.route) }
             )
@@ -119,6 +162,7 @@ sealed class Screen(val route: String) {
     data object AppInfo : Screen("appinfo")
     data object Permissions : Screen("permissions")
     data object Pairing : Screen("pairing")
+    data object Settings : Screen("settings")
 }
 
 @Composable
