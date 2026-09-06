@@ -29,6 +29,7 @@ import com.dominik.control.kidshield.ui.controller.SettingsViewModel
 fun SettingsScreen(
     viewModel: SettingsViewModel,
     onNavigateToPairing: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     onBack: () -> Unit
 ) {
     Scaffold(
@@ -54,7 +55,10 @@ fun SettingsScreen(
             Spacer(Modifier.height(8.dp))
 
             Button(
-                onClick = { viewModel.logout() },
+                onClick = {
+                    viewModel.logout()
+                    onNavigateToLogin()
+                          },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
             ) {

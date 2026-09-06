@@ -39,7 +39,8 @@ fun NavigationStack(
     LaunchedEffect(authState) {
         if (authState is AuthState.Unauthenticated) {
             navController.navigate(Screen.Login.route) {
-                popUpTo(0)
+                popUpTo(0) { inclusive = true }
+                launchSingleTop = true
             }
         }
     }
@@ -49,7 +50,10 @@ fun NavigationStack(
         authManager.start()
     }
 
-    NavHost(navController = navController, startDestination = Screen.Splash.route) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Splash.route
+    ) {
 //    NavHost(navController = navController, startDestination = Screen.Pairing.route) {
 
         composable(route = Screen.Splash.route) {
@@ -83,7 +87,7 @@ fun NavigationStack(
             LoginScreen(
                 viewModel = viewModel,
                 onNavigateToHome = {
-                navController.navigate(Screen.Pairing.route) {
+                navController.navigate(Screen.Permissions.route) {
                     popUpTo(Screen.Login.route) { inclusive = true }
                     launchSingleTop = true
                 }
@@ -134,6 +138,12 @@ fun NavigationStack(
                 viewModel = viewModel,
                 onNavigateToPairing = {
                     navController.navigate(Screen.Pairing.route) {
+                        popUpTo(Screen.Settings.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Settings.route) { inclusive = true }
                         launchSingleTop = true
                     }
