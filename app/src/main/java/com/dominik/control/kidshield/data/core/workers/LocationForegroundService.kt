@@ -207,11 +207,11 @@ class LocationForegroundService : Service() {
                 applicationContext,
                 ACTIVITY_PENDING_INTENT_REQUEST,
                 Intent(applicationContext, ActivityUpdatesReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
             )
             activityRecognitionClient.requestActivityUpdates(60_000L, pi)
                 .addOnFailureListener {
-                    Log.d("location", "startActivityRecognition: couldnt request activity update")
+                    Log.d("location", "startActivityRecognition: couldn't request activity update")
                 }
         } catch (e: SecurityException) {
             Log.d("location", "startActivityRecognition: lack of permission")
@@ -224,7 +224,7 @@ class LocationForegroundService : Service() {
                 applicationContext,
                 ACTIVITY_PENDING_INTENT_REQUEST,
                 Intent(applicationContext, ActivityUpdatesReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
             )
             activityRecognitionClient.removeActivityUpdates(pi)
         } catch (e: SecurityException) {

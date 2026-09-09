@@ -3,6 +3,8 @@ package com.dominik.control.kidshield.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Base64
+import android.util.Log
 import com.dominik.control.kidshield.data.local.datasource.TokenRepository
 import com.dominik.control.kidshield.data.model.Resource
 import com.dominik.control.kidshield.data.model.dto.RefreshRequest
@@ -16,6 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 sealed interface AuthState {
     data object Loading : AuthState
@@ -108,8 +111,13 @@ class AuthManager @Inject constructor(
     }
 
     fun logout() {
-        tokenStore.clearTokens()
+        val refresh = tokenStore.getRefreshToken()
+        CoroutineScope(ioDispatcher).launch {
+            if (refresh!=null) authRepository.logout(RefreshRequest(refresh))
+//            tokenStore.clearTokens()
+        }
         _state.value = AuthState.Unauthenticated
+        Log.d("AuthManager", "The state is: "+_state.value)
     }
 
     private fun hasInternet(): Boolean {
@@ -124,8 +132,8 @@ class AuthManager @Inject constructor(
             val parts = token.split(".")
             if (parts.size < 2) return false
             val payload = parts[1]
-            val decoded = String(android.util.Base64.decode(payload, android.util.Base64.URL_SAFE or android.util.Base64.NO_PADDING or android.util.Base64.NO_WRAP))
-            val json = org.json.JSONObject(decoded)
+            val decoded = String(Base64.decode(payload, Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP))
+            val json = JSONObject(decoded)
             val exp = json.optLong("exp", 0L)
             exp != 0L && (System.currentTimeMillis() / 1000) < exp
         } catch (e: Exception) {
