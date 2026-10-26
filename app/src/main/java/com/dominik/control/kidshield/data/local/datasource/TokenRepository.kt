@@ -13,6 +13,7 @@ class TokenRepository @Inject constructor(
     companion object {
         private const val KEY_ACCESS = "access_token"
         private const val KEY_REFRESH = "refresh_token"
+        private const val IS_PAIRED = "is_paired"
     }
 
     fun saveTokens(accessToken: String, refreshToken: String){
@@ -35,6 +36,14 @@ class TokenRepository @Inject constructor(
             remove(KEY_ACCESS)
             remove(KEY_REFRESH)
         }
+    }
+
+    fun putPairedStatus(isPaired: Boolean){
+        prefs.edit() { putBoolean(IS_PAIRED, isPaired) }
+    }
+
+    fun getPairedStatus(): Boolean{
+        return prefs.getBoolean(IS_PAIRED, false)
     }
 
 }

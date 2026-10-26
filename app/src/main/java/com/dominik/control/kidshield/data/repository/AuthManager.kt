@@ -58,24 +58,14 @@ class AuthManager @Inject constructor(
         }
 
         if (!hasInternet()) {
-            // offline: jeśli miałeś tokens -> pozwól być online w trybie offline
             if (!access.isNullOrBlank()) {
                 _state.value = AuthState.Authenticated
             } else {
-                // brak access, ale jest refresh - nie mamy internetu, jednak lepiej dać offline experience?
-                // decyzja: dajemy Authenticated bez access (możesz przekazać empty)
                 _state.value = AuthState.Authenticated
             }
             return@withContext
         }
 
-        // mamy internet -> jeśli access is present and valid (JWT check) -> ok
-//        if (!access.isNullOrBlank() && isAccessTokenValid(access)) {
-//            _state.value = AuthState.Authenticated
-//            return@withContext
-//        }
-
-        // spróbuj refresh
         when(authRepository.refresh(RefreshRequest(refresh))){
             is Resource.Success -> {
                 _state.value = AuthState.Authenticated
@@ -91,7 +81,6 @@ class AuthManager @Inject constructor(
 
     suspend fun tryRefresh(): Boolean = withContext(ioDispatcher) {
         val refresh = tokenStore.getRefreshToken() ?: return@withContext false
-//        val res = authRepository.refresh(RefreshRequest(refresh))
         when(val res = authRepository.refresh(RefreshRequest(refresh))){
             is Resource.Success -> {
                 _state.value = AuthState.Authenticated
@@ -114,7 +103,6 @@ class AuthManager @Inject constructor(
         val refresh = tokenStore.getRefreshToken()
         CoroutineScope(ioDispatcher).launch {
             if (refresh!=null) authRepository.logout(RefreshRequest(refresh))
-//            tokenStore.clearTokens()
         }
         _state.value = AuthState.Unauthenticated
         Log.d("AuthManager", "The state is: "+_state.value)
@@ -140,4 +128,13 @@ class AuthManager @Inject constructor(
             false
         }
     }
+
+    fun isPaired(): Boolean {
+        return tokenStore.getPairedStatus()
+    }
+
+    fun pair(){
+        return tokenStore.putPairedStatus(true)
+    }
+
 }

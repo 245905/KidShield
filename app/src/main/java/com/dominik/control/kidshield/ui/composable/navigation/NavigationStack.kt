@@ -54,8 +54,6 @@ fun NavigationStack(
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
-//    NavHost(navController = navController, startDestination = Screen.Pairing.route) {
-
         composable(route = Screen.Splash.route) {
 
             LaunchedEffect(authState) {
@@ -65,9 +63,17 @@ fun NavigationStack(
                         // stay
                     }
                     is AuthState.Authenticated -> {
-                        navController.navigate(Screen.Permissions.route) {
-                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        if(authManager.isPaired()){
+                            navController.navigate(Screen.Permissions.route) {
+                                popUpTo(Screen.Splash.route) { inclusive = true }
+                            }
                         }
+                        else{
+                            navController.navigate(Screen.Pairing.route) {
+                                popUpTo(Screen.Splash.route) { inclusive = true }
+                            }
+                        }
+
                     }
                     is AuthState.Unauthenticated -> {
                         navController.navigate(Screen.Login.route) {
@@ -87,10 +93,18 @@ fun NavigationStack(
             LoginScreen(
                 viewModel = viewModel,
                 onNavigateToHome = {
-                navController.navigate(Screen.Permissions.route) {
-                    popUpTo(Screen.Login.route) { inclusive = true }
-                    launchSingleTop = true
-                }
+                    if(authManager.isPaired()){
+                        navController.navigate(Screen.Permissions.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                    else{
+                        navController.navigate(Screen.Pairing.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
             })
         }
 

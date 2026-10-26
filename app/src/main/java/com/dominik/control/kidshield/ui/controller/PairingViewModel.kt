@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.dominik.control.kidshield.data.model.Resource
 import com.dominik.control.kidshield.data.model.dto.CheckPairStatusRequest
 import com.dominik.control.kidshield.data.model.dto.PairByPinRequest
+import com.dominik.control.kidshield.data.repository.AuthManager
 import com.dominik.control.kidshield.data.repository.PairingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -38,7 +39,8 @@ sealed class PairingEvent {
 
 @HiltViewModel
 class PairingViewModel@Inject constructor(
-    private val pairingRepository: PairingRepository
+    private val pairingRepository: PairingRepository,
+    private val authManager: AuthManager
 ) : ViewModel()  {
 
     private val _uiState = MutableStateFlow(PairingUiState())
@@ -83,6 +85,7 @@ class PairingViewModel@Inject constructor(
                 Resource.Loading -> {  }
             }
         }
+        authManager.pair()
     }
 
     fun generatePin(){
